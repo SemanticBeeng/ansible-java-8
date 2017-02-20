@@ -27,9 +27,9 @@ script:
   # Run Ansible role
   - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ansible-java-8/tests/test.yaml
   # Check that the Java version is 8
-  - sudo docker exec centos-${OS_VERSION} java -version 2>&1 | awk -F\" '/version/ {print $2}' | grep "1.8.0" && (echo "Version test: pass" && exit 0) || (echo "Version test: fail" && exit 1)
+  - sudo docker exec centos-${OS_VERSION} java -version 2>&1 | awk -F\" '/version/ {print $2}' | grep "1.8.0" && (echo "Version test - pass" && exit 0) || (echo "Version test - fail" && exit 1)
   # Check Java executable location, references java alternatives
-  - sudo docker exec centos-${OS_VERSION} whereis java 2>&1 | awk -F\" '/java:/ {print $1}' | grep "\/usr\/bin\/java" && (echo "Executable location test (/usr/bin/java): pass"  && exit 0) || (echo "Executable location test (/usr/bin/java): fail" && exit 1)
+  - sudo docker exec centos-${OS_VERSION} whereis java 2>&1 | awk -F\" '/java:/ {print $1}' | grep "\/usr\/bin\/java" && (echo "Executable location test (/usr/bin/java) - pass" && exit 0) || (echo "Executable location test (/usr/bin/java) - fail" && exit 1)
 
 after_script:
   - sudo docker stop centos-${OS_VERSION}
