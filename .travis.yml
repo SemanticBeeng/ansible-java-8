@@ -8,7 +8,6 @@ services:
 
 env:
   - OS_VERSION=7
-  - OS_VERSION=6
 
 before_install:
   - sudo docker pull centos:${OS_VERSION}
