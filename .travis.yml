@@ -1,0 +1,36 @@
+---
+
+language: python
+sudo: required
+
+services:
+  - docker
+
+env:
+  - OS_VERSION=7
+  - OS_VERSION=6
+
+before_install:
+  - sudo docker pull centos:${OS_VERSION}
+
+install:
+  - sudo docker run --detach --volume="${PWD}":/etc/ansible/roles/ansible-java-8:ro --name centos-${OS_VERSION} centos:${OS_VERSION} sleep 300
+  - sudo docker exec centos-${OS_VERSION} yum -y install epel-release
+  - sudo docker exec centos-${OS_VERSION} yum -y install ansible
+
+script:
+  # Check syntax of Ansible role
+  - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ansible-java-8/tests/test.yml --syntax-check
+  # Run Ansible role
+  - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ansible-java-8/tests/test.yml
+  # Check that the Java version is 8
+  - sudo docker exec centos-${OS_VERSION} java -version | grep -q 'java version \"1.8' && (echo 'Version test: pass' && exit 0) || (echo 'Version test: fail' && exit 1)
+  # Check Java executable location, references java alternatives
+  - sudo docker exec centos-${OS_VERSION} which java | grep -q '\/usr\/bin\/java' && (echo 'Executable location /usr/bin/java test: pass' && exit 0) || (echo 'Executable location /usr/bin/java test: fail' && exit 1)
+
+after_script:
+  - sudo docker stop centos-${OS_VERSION}
+
+notifications:
+  email:
+    - giveit@gmail.com
