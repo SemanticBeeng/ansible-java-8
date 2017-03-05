@@ -1,10 +1,16 @@
 ---
 
+- name: Check if Java has already been downloaded and unpacked
+  stat:
+    path: '{{ java_jdk_dir }}'
+  register: dir
+
 - name: Download Java JDK
   get_url:
     url: "{{ java_download_url }}"
     headers: "Cookie:oraclelicense=accept-securebackup-cookie"
     dest: /tmp/{{ java_archive_name }}
+  when: dir.stat.exists == False
   tags:
     - java_install
 
@@ -12,6 +18,7 @@
   file:
     name: "{{ java_root_dir }}"
     state: directory
+  when: dir.stat.exists == False
   tags:
     - java_install
 
@@ -24,14 +31,18 @@
     copy: no
     owner: root
     group: root
+  when: dir.stat.exists == False
   tags:
     - java_install
 
-# Use the alternatives command to install the appropriate links to the executes in the PATH.
+# Use the alternatives command to install the appropriate links to the executables in the PATH.
 # Alternatives allows multiple versions of Java to be installed with the correct executable
 # on the PATH being used.
 - name: Install Java alternatives
-  command: "alternatives --install /usr/bin/java java {{ java_jdk_dir }}/bin/java 2"
+  alternatives:
+    name: java
+    link: /usr/bin/java
+    path: '{{ java_jdk_dir }}/bin/java'
   tags:
     - java_install_alternatives
 
@@ -49,3 +60,5 @@
 - name: Set fact java_8_installed
   set_fact:
     java_8_installed: true
+  tags:
+    - java_install

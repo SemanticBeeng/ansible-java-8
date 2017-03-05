@@ -13,7 +13,10 @@ galaxy_info:
       - all
   galaxy_tags:
     - java
-    - java-8
+    - java_8
     - jdk
+    - jdk_8
+    - oracle_java
+    - oracle_jdk
 
 dependencies: []
