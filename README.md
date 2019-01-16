@@ -10,10 +10,10 @@ Java alternatives are updated to use this by default and executable is `/usr/bin
 
 ## Role Variables
 
-    java_download_url: http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.tar.gz
-    java_archive_name: jdk-8u181-linux-x64.tar.gz
+    java_download_url: https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-linux-x64.tar.gz
+    java_archive_name: jdk-8u201-linux-x64.tar.gz
     java_root_dir: /usr/share/java-1.8.0
-    java_jdk_dir: "{{ java_root_dir }}/jdk1.8.0_181"
+    java_jdk_dir: "{{ java_root_dir }}/jdk1.8.0_201"
 
 
 ## Example Playbook
