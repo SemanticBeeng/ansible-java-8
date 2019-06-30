@@ -10,7 +10,7 @@
     url: "{{ java_download_url }}"
     headers: "Cookie:oraclelicense=accept-securebackup-cookie"
     dest: /tmp/{{ java_archive_name }}
-  when: dir.stat.exists == False
+  when: not dir.stat.exists
   tags:
     - java_install
 
@@ -18,7 +18,7 @@
   file:
     name: "{{ java_root_dir }}"
     state: directory
-  when: dir.stat.exists == False
+  when: not dir.stat.exists
   tags:
     - java_install
 
@@ -31,7 +31,7 @@
     copy: no
     owner: root
     group: root
-  when: dir.stat.exists == False
+  when: not dir.stat.exists
   tags:
     - java_install
 
